@@ -1,0 +1,391 @@
+@charset "utf-8";
+
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.App {
+  text-align: center;
+}
+
+header {
+  background-color: #f44336;
+  color: white;
+  padding: 1rem;
+}
+
+.search-section {
+  padding: 1rem;
+  background-color: #f44336;
+  color: white;
+}
+
+.search-section input {
+  margin: 0.5rem;
+}
+
+.search-section button {
+  background-color: white;
+  color: #f44336;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.spots-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+
+.spot {
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.spot img {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.spot-detail {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.spot-detail img {
+  width: 100%;
+  height: auto;
+}
+
+.spot-detail button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+} */
+
+/* 
+Base style
+*/  
+body{
+    font-family: "Noto Sans JP","Helvetica Neue", "Helvetica", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Arial", "Yu Gothic", "Meiryo", sans-serif;
+    border-spacing: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* 
+header 
+*/
+.header{
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+    border-bottom: #cacaca 1.5px solid;
+}
+.header-div{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+.header-discription{
+    margin-left: 30px;
+    font-size: 25px;
+    font-weight: bold;
+    color: rgb(220, 25, 25);
+}
+.header-line{
+    margin: 0;
+    padding: 0;
+    border-spacing: 0;
+    width: 100%;
+}
+
+/*
+section
+*/
+.section-1{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+.sidebar{
+    margin: 60px 0 0 0;
+    padding: 0;
+    position: fixed;
+    width: 37%;
+    height: 100%;
+    background-color: rgb(213, 10, 10);
+}
+.sidebar-contents{
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.sidebar-removecontents{
+    margin: 5px auto 0 auto;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.sidebar-contents > * {
+    margin: 0 10px; /* 要素間の左右の余白を10pxに設定 */
+}
+.input-from{
+    margin: 135px auto 0 auto;
+    max-width: 250px;
+    padding-bottom: 8px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: rgb(213, 10, 10);
+    font-size: 22px;
+    border: none;
+    border-bottom: #fff 1.5px solid;
+    outline: none;
+}
+.input-to{
+    margin: 40px auto 0 auto;
+    max-width: 250px;
+    padding-bottom: 8px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: rgb(213, 10, 10);
+    font-size: 22px;
+    border: none;
+    border-bottom: #fff 1.5px solid;
+    outline: none;
+}
+.input-waypoint{
+    margin: 40px auto 0 auto;
+    max-width: 250px;
+    padding-bottom: 6px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: rgb(213, 10, 10);
+    font-size: 22px;
+    border: none;
+    border-bottom: #fff 1.5px solid;
+    outline: none;
+}
+input::placeholder {
+    color: #fff;
+}
+.sidebar-button{
+    margin: 60px auto 0 auto;
+    padding: 5px 30px;
+    width: auto;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgb(255, 255, 255);
+    color: rgb(213, 10, 10);
+    font-size: 22px;
+    border: #fff 2px solid;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+.sidebar-button:hover{
+    background-color: rgb(213, 10, 10);
+    color: rgb(255, 255, 255);
+}
+.sidebar-removebutton{
+    margin: 60px auto 0 auto;
+    padding: 5px 30px;
+    width: auto;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgb(213, 10, 10);
+    color: rgb(255, 255, 255);
+    font-size: 22px;
+    border: #fff 2px solid;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+.sidebar-removebutton:hover{
+    background-color: rgb(255, 255, 255);
+    color: rgb(213, 10, 10);
+}
+
+/*
+contents
+*/
+.contents{
+    margin-right: 70%;
+    padding: 0;
+    width: auto;
+    height: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.contents-ul-top{
+    margin: 120px auto 0 auto;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contents-ul{
+    margin: 20px auto;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contents-left-il{
+    margin-right: 25px;
+    width: 50%;
+    list-style-type: none;
+}
+.contents-right-il{
+    margin-left: 25px;
+    width: 50%;
+    list-style-type: none;
+}
+.contents-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.contents-imgbox{
+    max-width: 330px;
+    max-height: 240px;
+    overflow: hidden;
+    border-radius: 3%;
+}
+.contents-text{
+    text-align: center;
+}
+
+/*
+modal
+*/
+.modal {
+    display: none; /* 初期は非表示 */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0.9); /* 白く濁った背景 */
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+.modal-content {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #aaa;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 説明文のスタイル */
+.caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #333;
+    padding: 10px 0;
+}
+
