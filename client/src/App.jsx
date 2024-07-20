@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { Loader } from '@googlemaps/js-api-loader';
 
 const touristSpots = [
   {
@@ -15,34 +16,63 @@ const touristSpots = [
   // 他の観光地を追加
 ];
 
+const loader = new Loader({
+  apiKey: 'AIzaSyATXjhgxA95w2Rncd_at9Y8N6f55q1C5Zc',
+  version: 'weekly',
+  libraries: ['geometry', 'places']
+});
+
 function App() {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [waypoints, setWaypoints] = useState([{ id: 1, value: '' }]);
-  // const [mapLoaded, setMapLoaded] = useState(false);
+  const [waypoints, setWaypoints] = useState([]);
   const [routeInfo, setRouteInfo] = useState(null);
   const [modalData, setModalData] = useState({ isVisible: false, imgSrc: '', caption: '' });
+  const [isSearching, setIsSearching] = useState(false);
+  const [mapInitialized, setMapInitialized] = useState(false);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyATXjhgxA95w2Rncd_at9Y8N6f55q1C5Zc&callback=initMap&libraries=geometry`;
-    script.defer = true;
-    script.async = true;
-    script.onload = () => {
-      setMapLoaded(true);
-    };
-    document.head.appendChild(script);
+    loader.load().then(() => {
+      window.initMap = initMap;
+    }).catch(e => {
+      console.error("Failed to load Google Maps API", e);
+    });
   }, []);
 
-  // const initMap = () => {
-  //   const map = new window.google.maps.Map(document.getElementById('map'), {
-  //     zoom: 12,
-  //     center: { lat: 34.655, lng: 133.919 },
-  //   });
-  //   window.map = map;
-  // };
+  useEffect(() => {
+    if (routeInfo && mapInitialized) {
+      console.log('Adding markers...');
+      addMarkers(from, to, waypoints);
+    }
+  }, [routeInfo, mapInitialized]);
+
+  const initMap = () => {
+    console.log('Initializing map...');
+    const mapElement = document.getElementById('map');
+    if (!mapElement) {
+      console.error("Map element not found!");
+      return;
+    }
+
+    const map = new google.maps.Map(mapElement, {
+      center: { lat: 34.655, lng: 133.919 },
+      zoom: 12,
+      mapId: 'f43a46398df54a3b',
+    });
+
+    window.map = map;
+    window.AdvancedMarkerView = google.maps.marker.AdvancedMarkerView;
+    setMapInitialized(true);
+    console.log('Map initialized.');
+  };
 
   const handleSearch = async () => {
+    if (!window.google) {
+      console.error('Google Maps API is not loaded yet.');
+      return;
+    }
+
+    setIsSearching(true);
     const waypointsParam = waypoints.map(wp => wp.value).join('|');
     try {
       const response = await fetch(`/route?from=${from}&to=${to}&waypoints=${waypointsParam}`);
@@ -51,23 +81,34 @@ function App() {
       }
       const data = await response.json();
       if (data.overviewPolyline) {
-        displayRoute(data.overviewPolyline);
         setRouteInfo({
           distance: data.distance,
           duration: data.duration,
         });
+        if (mapInitialized) {
+          console.log('Displaying route...');
+          displayRoute(data.overviewPolyline);
+        }
       } else {
         alert('ルートが見つかりませんでした');
       }
     } catch (error) {
       console.error('Error fetching route:', error);
       alert(`ルート検索中にエラーが発生しました: ${error.message}`);
+    } finally {
+      setIsSearching(false);
     }
   };
 
   const displayRoute = (polyline) => {
-    const path = window.google.maps.geometry.encoding.decodePath(polyline);
-    const routePath = new window.google.maps.Polyline({
+    if (!window.google || !window.map) {
+      console.error('Google Maps API or map is not initialized.');
+      return;
+    }
+
+    console.log('Displaying route on the map...');
+    const path = google.maps.geometry.encoding.decodePath(polyline);
+    const routePath = new google.maps.Polyline({
       path: path,
       geodesic: true,
       strokeColor: '#FF0000',
@@ -75,6 +116,54 @@ function App() {
       strokeWeight: 2,
     });
     routePath.setMap(window.map);
+  };
+
+  const addMarkers = (from, to, waypoints) => {
+    if (!window.google || !window.map) {
+      console.error('Google Maps API or map is not initialized.');
+      return;
+    }
+
+    const geocoder = new google.maps.Geocoder();
+
+    // Add marker for the start location
+    geocoder.geocode({ address: from }, (results, status) => {
+      if (status === 'OK') {
+        new google.maps.Marker({
+          map: window.map,
+          position: results[0].geometry.location,
+          title: `出発点: ${from}`,
+          label: 'S'
+        });
+        window.map.setCenter(results[0].geometry.location); // 中心を設定
+      }
+    });
+
+    // Add marker for the end location
+    geocoder.geocode({ address: to }, (results, status) => {
+      if (status === 'OK') {
+        new google.maps.Marker({
+          map: window.map,
+          position: results[0].geometry.location,
+          title: `到着点: ${to}`,
+          label: 'E'
+        });
+      }
+    });
+
+    // Add markers for waypoints
+    waypoints.forEach((waypoint, index) => {
+      geocoder.geocode({ address: waypoint.value }, (results, status) => {
+        if (status === 'OK') {
+          new google.maps.Marker({
+            map: window.map,
+            position: results[0].geometry.location,
+            title: `経由地${index + 1}: ${waypoint.value}`,
+            label: `${index + 1}`
+          });
+        }
+      });
+    });
   };
 
   const addWaypoint = () => {
@@ -102,12 +191,6 @@ function App() {
     setModalData({ isVisible: false, imgSrc: '', caption: '' });
   };
 
-  // useEffect(() => {
-  //   if (mapLoaded) {
-  //     initMap();
-  //   }
-  // }, [mapLoaded]);
-
   return (
     <div className="App">
       <header className="header">
@@ -116,8 +199,8 @@ function App() {
         </div>
       </header>
 
-      <section className="section-1">
-        <div className="sidebar">
+      <div className="sidebar">
+        {!routeInfo ? (
           <div className="sidebar-contents">
             <input
               type="text"
@@ -133,59 +216,69 @@ function App() {
               onChange={(e) => setTo(e.target.value)}
               placeholder="to 入力"
             />
-            {waypoints.map((waypoint) => ( 
-              <div className="sidebar-removecontents">
+            {waypoints.map((waypoint) => (
+              <div className="sidebar-removecontents" key={waypoint.id}>
                 <input
-                  key={waypoint.id}
                   type="text"
                   className="input-waypoint"
                   value={waypoint.value}
                   onChange={(e) => handleWaypointChange(waypoint.id, e.target.value)}
                   placeholder={`経由地 ${waypoint.id}`}
-              />
+                />
                 <button className="sidebar-removebutton" onClick={() => removeWaypoint(waypoint.id)}>削除</button>
-                </div>
+              </div>
             ))}
             {waypoints.length < 4 && (
               <button className="sidebar-button" onClick={addWaypoint}>経由地 追加</button>
             )}
-            
+          
             <button className="sidebar-button" onClick={handleSearch}>検索</button>
           </div>
-        </div>
+        ) : (
+          <div className="sidebar-contents">
+            <p className="input-from">
+              距離: {routeInfo.distance}<br></br>
+              所要時間: {routeInfo.duration}
+            </p>
+          </div>
+        )}
+      </div>
 
-        <div className="contents">
-          <ul className="contents-ul-top">
-            {touristSpots.map((spot, index) => (
-              <li key={index} className={`contents-${index % 2 === 0 ? 'left' : 'right'}-il`}>
-                <div className="contents-box">
-                  <div className="contents-imgbox">
-                    <img
-                      className="myImg"
-                      data-caption={spot.description}
-                      src={spot.imageUrl}
-                      alt={spot.name}
-                      width="330px"
-                      height="240px"
-                      onClick={() => openModal(spot.imageUrl, spot.description)}
-                    />
+      <div className="contents">
+        {!routeInfo ? (
+          <>
+            {console.log("Rendering tourist spots list")}
+            <ul className="contents-ul-top">
+              {touristSpots.map((spot, index) => (
+                <li key={index} className={`contents-${index % 2 === 0 ? 'left' : 'right'}-il`}>
+                  {console.log(`Rendering spot: ${spot.name}`)}
+                  <div className="contents-box">
+                    <div className="contents-imgbox">
+                      <img
+                        className="myImg"
+                        data-caption={spot.description}
+                        src={spot.imageUrl}
+                        alt={spot.name}
+                        width="330px"
+                        height="240px"
+                        onClick={() => openModal(spot.imageUrl, spot.description)}
+                      />
+                    </div>
+                    <div className="contents-text">
+                      <p>{spot.name}</p>
+                    </div>
                   </div>
-                  <div className="contents-text">
-                    <p>{spot.name}</p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-          {routeInfo && (
-            <section className="route-info">
-              <p>距離: {routeInfo.distance}</p>
-              <p>所要時間: {routeInfo.duration}</p>
-            </section>
-          )}
-          <div id="map" style={{ height: '500px', width: '100%', marginTop: '20px' }}></div>
-        </div>
-      </section>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <>
+            {console.log("Rendering route information and map")}
+            <div id="map" style={{ height: '600px', width: '800px', marginTop: '20px' }}></div>
+          </>
+        )}
+      </div>
 
       {modalData.isVisible && (
         <div id="myModal" className="modal" onClick={closeModal}>
