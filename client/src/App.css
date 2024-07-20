@@ -285,7 +285,7 @@ contents
 .contents{
     margin-left: 37%;
     padding: 0;
-    width: auto;
+    width: 63%;
     height: auto;
     height: 100%;
     display: flex;
@@ -391,7 +391,11 @@ modal
 }
 
 #map {
+  margin-top: 60px;
   z-index: 10;
-  width: 100%;
-  height: 100%;
 } 
+
+.hidden {
+  display: none;
+}
+
