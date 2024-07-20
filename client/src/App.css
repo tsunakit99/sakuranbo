@@ -127,6 +127,7 @@ body{
     border-spacing: 0;
     margin: 0;
     padding: 0;
+    display: block !important;
 }
 
 /* 
@@ -230,7 +231,7 @@ section
 .input-waypoint{
     margin: 40px auto 0 auto;
     max-width: 250px;
-    padding-bottom: 6px;
+    padding-bottom: 8px;
     text-align: center;
     text-decoration: none;
     color: #fff;
@@ -282,7 +283,7 @@ input::placeholder {
 contents
 */
 .contents{
-    margin-right: 70%;
+    margin-left: 37%;
     padding: 0;
     width: auto;
     height: auto;
@@ -389,3 +390,8 @@ modal
     padding: 10px 0;
 }
 
+#map {
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+} 
