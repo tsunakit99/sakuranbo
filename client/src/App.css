@@ -127,6 +127,7 @@ body{
     border-spacing: 0;
     margin: 0;
     padding: 0;
+    display: block !important;
 }
 
 /* 
@@ -152,9 +153,8 @@ header
 }
 .header-discription{
     margin-left: 30px;
-    font-size: 25px;
-    font-weight: bold;
-    color: rgb(220, 25, 25);
+     max-width: 30px;
+    max-height: 30px;
 }
 .header-line{
     margin: 0;
@@ -178,6 +178,7 @@ section
     position: fixed;
     width: 37%;
     height: 100%;
+    overflow: auto;
     background-color: rgb(213, 10, 10);
 }
 .sidebar-contents{
@@ -230,7 +231,7 @@ section
 .input-waypoint{
     margin: 40px auto 0 auto;
     max-width: 250px;
-    padding-bottom: 6px;
+    padding-bottom: 8px;
     text-align: center;
     text-decoration: none;
     color: #fff;
@@ -244,7 +245,7 @@ input::placeholder {
     color: #fff;
 }
 .sidebar-button{
-    margin: 60px auto 0 auto;
+    margin: 60px auto 50px auto;
     padding: 5px 30px;
     width: auto;
     text-align: center;
@@ -282,38 +283,38 @@ input::placeholder {
 contents
 */
 .contents{
-    margin-right: 70%;
+    margin-left: 37%;
     padding: 0;
-    width: auto;
+    width: 63%;
     height: auto;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 .contents-ul-top{
-    margin: 120px auto 0 auto;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  margin: 120px auto 0 auto;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
-.contents-ul{
-    margin: 20px auto;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.contents-ul {
+  margin: 20px auto;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
-.contents-left-il{
-    margin-right: 25px;
-    width: 50%;
-    list-style-type: none;
+
+.contents-left-il,
+.contents-right-il {
+  flex: 1 1 45%;
+  margin: 10px;
+  list-style-type: none;
 }
-.contents-right-il{
-    margin-left: 25px;
-    width: 50%;
-    list-style-type: none;
-}
+
 .contents-box{
     display: flex;
     flex-direction: column;
@@ -325,6 +326,12 @@ contents
     overflow: hidden;
     border-radius: 3%;
 }
+
+.contents-imgbox:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .contents-text{
     text-align: center;
 }
@@ -332,60 +339,76 @@ contents
 /*
 modal
 */
+
+#map {
+  margin-top: 60px;
+  z-index: 10;
+} 
+
+.hidden {
+  display: none;
+}
+
 .modal {
-    display: none; /* 初期は非表示 */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(255, 255, 255, 0.9); /* 白く濁った背景 */
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.8);
+  transition: opacity 0.5s ease-in-out;
 }
 
 .modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 3%;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
 }
 
-.modal-content {
-    animation-name: zoom;
-    animation-duration: 0.6s;
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
 
-@keyframes zoom {
-    from {transform: scale(0)}
-    to {transform: scale(1)}
+.modal.show {
+  display: block;
+  opacity: 1;
 }
 
 .close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #aaa;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-/* 説明文のスタイル */
 .caption {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-    text-align: center;
-    color: #333;
-    padding: 10px 0;
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 20px;
+  padding: 10px 0;
+  height: 150px;
 }
 
