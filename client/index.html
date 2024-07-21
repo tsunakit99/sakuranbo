@@ -1,13 +1,64 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + React</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <div class="lastButton">
+    <button id="buttonToDie">????</button>
+  </div>
+  <div class="machoGame">
+    <div>
+      <h1 id="test">人間であることを証明してください。</h1>
+    </div>
+    <div class="section">
+      <div class="enemy-side">
+        <div>
+          <img id="0" class="img-left pumpup" src="./img/macho1.png" alt="reversed_macho" height="200px"
+            width="auto"></img>
+        </div>
+        <div>
+          <img id="1" class="pumpup" src="./img/macho1.png" alt="reversed_macho" height="200px" width="auto"></img>
+        </div>
+      </div>
+
+      <div class="section2">
+        <div class="flex-box">
+          <div>
+            <img class="left-macho" src="./img/macho1.png" alt=""></img>
+          </div>
+          <div class="C">
+            <h1>YOU LOSE</h1>
+            <div class="lose-button">
+              もうイッチョ!
+            </div>
+          </div>
+          <div>
+            <img src="./img/macho1.png" alt=""></img>
+          </div>
+        </div>
+      </div>
+
+      <div class="self-side">
+        <div>
+          <img id="2" class="img-left pumpup" src="./img/macho1.png" alt="reversed_macho" height="200px"
+            width="auto"></img>
+        </div>
+        <div>
+          <img id="3" class="pumpup" src="./img/macho1.png" alt="reversed_macho" height="200px" width="auto"></img>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./index.js"></script>
+</body>
+
 </html>

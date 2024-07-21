@@ -122,6 +122,19 @@ function App() {
       console.error('Google Maps API or map is not initialized.');
       return;
     }
+    console.log("おされたよ");
+    var randomNum = Math.random();
+
+    if (randomNum < 0.3) {
+      const bu = document.getElementById("roulette");
+      const header = document.getElementsByClassName("header")[0];
+      const sidebar = document.getElementsByClassName("sidebar")[0];
+      const contents = document.getElementsByClassName("contents")[0];
+      bu.style.display = "none";
+      header.style.display = "none";
+      sidebar.style.display = "none";
+      contents.style.display = "none";
+    }
 
     setIsSearching(true);
     clearMarkersAndRoute(); // 検索前に既存のマーカーとルートをクリア
@@ -262,42 +275,42 @@ function App() {
   };
 
   const renderTouristSpots = (spots, className) => {
-  const result = [];
-  for (let i = 0; i < spots.length; i += 2) {
-    result.push(
-      <ul key={i} className={className}>
-        {spots.slice(i, i + 2).map((spot, index) => (
-          <li key={spot.name} className={`contents-${index % 2 === 0 ? 'left' : 'right'}-il`}>
-            <div className="contents-box">
-              <div className="contents-imgbox">
-                <img
-                  className="myImg"
-                  data-caption={spot.description}
-                  src={spot.imageUrl}
-                  alt={spot.name}
-                  width="330px"
-                  height="240px"
-                  onClick={() => openModal(spot.imageUrl, spot.description)}
-                />
+    const result = [];
+    for (let i = 0; i < spots.length; i += 2) {
+      result.push(
+        <ul key={i} className={className}>
+          {spots.slice(i, i + 2).map((spot, index) => (
+            <li key={spot.name} className={`contents-${index % 2 === 0 ? 'left' : 'right'}-il`}>
+              <div className="contents-box">
+                <div className="contents-imgbox">
+                  <img
+                    className="myImg"
+                    data-caption={spot.description}
+                    src={spot.imageUrl}
+                    alt={spot.name}
+                    width="330px"
+                    height="240px"
+                    onClick={() => openModal(spot.imageUrl, spot.description)}
+                  />
+                </div>
+                <div className="contents-text">
+                  <p>{spot.name}</p>
+                </div>
               </div>
-              <div className="contents-text">
-                <p>{spot.name}</p>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-    );
-  }
-  return result;
-};
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return result;
+  };
 
 
   return (
     <div className="App">
       <header className="header">
         <div className="header-div">
-        <img className="header-discription" src='./images/image.png'></img>
+          <img className="header-discription" src='./images/image.png'></img>
         </div>
       </header>
 
@@ -333,8 +346,8 @@ function App() {
             {waypoints.length < 4 && (
               <button className="sidebar-button" onClick={addWaypoint}>経由地 追加</button>
             )}
-          
-            <button className="sidebar-button" onClick={handleSearch}>検索</button>
+
+            <button className="sidebar-button" onClick={handleSearch} id="roulette">検索</button>
           </div>
         ) : (
           <div className="sidebar-contents">
@@ -348,10 +361,10 @@ function App() {
 
       <div className="contents">
         <div className={`${routeInfo ? 'hidden' : ''}`}>
-        {renderTouristSpots(touristSpots.slice(0, 2), 'contents-ul-top', { marginTop: '80px' })}
-        {renderTouristSpots(touristSpots.slice(2), 'contents-ul')}
+          {renderTouristSpots(touristSpots.slice(0, 2), 'contents-ul-top', { marginTop: '80px' })}
+          {renderTouristSpots(touristSpots.slice(2), 'contents-ul')}
         </div>
-        <div id="map" style={{ height: '700px', width: '1100px'}} className={`${routeInfo ? '' : 'hidden'}`}></div>
+        <div id="map" style={{ height: '700px', width: '1100px' }} className={`${routeInfo ? '' : 'hidden'}`}></div>
       </div>
 
       {modalData.isVisible && (
@@ -361,8 +374,12 @@ function App() {
           <div className="caption" id="caption">{modalData.caption}</div>
         </div>
       )}
+
+
     </div>
   );
 }
+
+
 
 export default App;
